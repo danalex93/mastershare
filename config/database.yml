@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: mastershare_development
+
+test:
+  <<: *default
+  database: mastershare_test
+
+production:
+  <<: *default
+  database: mastershare_production
+  username: mastershare
+  password: <%= ENV['MASTERSHARE_DATABASE_PASSWORD'] %>

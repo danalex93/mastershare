@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mentor: one
+  title: MyString
+  description: MyText
+  schedule: MyText
+  quotas: 1
+
+two:
+  mentor: two
+  title: MyString
+  description: MyText
+  schedule: MyText
+  quotas: 1
