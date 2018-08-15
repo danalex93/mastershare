@@ -10,6 +10,14 @@
   </head>
 
   <body>
+    <header>
+      <nav>
+        <li><%= link_to "Inicia Sesión como Mentor", new_mentor_session_url %></li>
+        <li><%= link_to "Inicia Sesión como Alumno", new_student_session_url %></li>
+        <li><%= link_to "Regístrate como Mentor", new_mentor_registration_url %></li>
+        <li><%= link_to "Regpistrate como Alumno", new_student_registration_url %></li>
+      </nav>
+    </header>
     <%= yield %>
   </body>
 </html>
