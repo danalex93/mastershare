@@ -12,31 +12,36 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :mentor_id %>
-    <%= form.text_field :mentor_id %>
+    <%= form.label :mentor_id, "Mentor" %>
+    <%= form.collection_select :mentor_id, @mentors, :id, :full_name %>
   </div>
 
   <div class="field">
-    <%= form.label :title %>
+    <%= form.label :semester_id, "Semestre" %>
+    <%= form.collection_select :semester_id, @semesters, :id, :identifier %> 
+  </div> 
+
+  <div class="field">
+    <%= form.label :title, "Título" %>
     <%= form.text_field :title %>
   </div>
 
   <div class="field">
-    <%= form.label :description %>
+    <%= form.label :description, "Descripción" %>
     <%= form.text_area :description %>
   </div>
 
   <div class="field">
-    <%= form.label :schedule %>
+    <%= form.label :schedule, "Horario" %>
     <%= form.text_area :schedule %>
   </div>
 
   <div class="field">
-    <%= form.label :quotas %>
+    <%= form.label :quotas, "Cupos" %>
     <%= form.number_field :quotas %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit "Aceptar" %>
   </div>
 <% end %>

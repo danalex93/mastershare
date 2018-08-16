@@ -1,35 +1,45 @@
-<p id="notice"><%= notice %></p>
+<h1>Talleres</h1>
 
-<h1>Workshops</h1>
+<%= form_tag(workshops_url, method: :get) do %>
+  <div class="field">
+    <%= collection_select nil, :semester_id, @semesters, :id, :identifier, selected: params[:semester_id], include_blank: "Selecciona un semestre..." %>
+  </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Mentor</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Schedule</th>
-      <th>Quotas</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <div class="field">
+    <%= submit_tag "Filtrar por Semestre" %>
+  </div>
+<% end %>
 
-  <tbody>
-    <% @workshops.each do |workshop| %>
+<% if @workshops %>
+  <table>
+    <thead>
       <tr>
-        <td><%= workshop.mentor %></td>
-        <td><%= workshop.title %></td>
-        <td><%= workshop.description %></td>
-        <td><%= workshop.schedule %></td>
-        <td><%= workshop.quotas %></td>
-        <td><%= link_to 'Show', workshop %></td>
-        <td><%= link_to 'Edit', edit_workshop_path(workshop) %></td>
-        <td><%= link_to 'Destroy', workshop, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Mentor</th>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Horario</th>
+        <th>Cupos</th>
+        <th colspan="3"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
-
-<%= link_to 'New Workshop', new_workshop_path %>
+    <tbody>
+      <% @workshops.each do |workshop| %>
+        <tr>
+          <td><%= workshop.mentor.full_name %></td>
+          <td><%= workshop.title %></td>
+          <td><%= workshop.description %></td>
+          <td><%= workshop.schedule %></td>
+          <td><%= workshop.quotas %></td>
+          <% if mentor_signed_in? and current_mentor == workshop.mentor %>
+            <td><%= link_to 'Ver', workshop %></td>
+            <td><%= link_to 'Editar', edit_workshop_path(workshop) %></td>
+            <td><%= link_to 'Borrar', workshop, method: :delete, data: { confirm: '¿Estás segura/o?' } %></td>
+          <% elsif mentor_signed_in? or student_signed_in? %>
+            <td><%= link_to 'Ver', workshop %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

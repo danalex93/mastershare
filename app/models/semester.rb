@@ -1,3 +1,7 @@
 class Semester < ApplicationRecord
-  has_many :workshops  
+  has_many :workshops
+
+  def identifier
+    "#{number} - #{year}"
+  end
 end

@@ -4,7 +4,10 @@ class WorkshopsController < ApplicationController
   # GET /workshops
   # GET /workshops.json
   def index
-    @workshops = Workshop.all
+    @semesters = Semester.all
+    if params[:semester_id].present?
+      @workshops = Workshop.where(semester_id: params[:semester_id])
+    end
   end
 
   # GET /workshops/1
@@ -15,10 +18,14 @@ class WorkshopsController < ApplicationController
   # GET /workshops/new
   def new
     @workshop = Workshop.new
+    @mentors = Mentor.all
+    @semesters = Semester.all
   end
 
   # GET /workshops/1/edit
   def edit
+    @mentors = Mentor.all
+    @semesters = Semester.all
   end
 
   # POST /workshops
@@ -69,6 +76,6 @@ class WorkshopsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workshop_params
-      params.require(:workshop).permit(:mentor_id, :title, :description, :schedule, :quotas)
+      params.require(:workshop).permit(:mentor_id, :semester_id, :title, :description, :schedule, :quotas)
     end
 end

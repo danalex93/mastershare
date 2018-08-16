@@ -6,4 +6,8 @@ class Student < ApplicationRecord
   has_many :workshops, through: :enrollments
   has_many :topics
   has_many :comments
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
