@@ -1,26 +1,34 @@
-<h2>Ingresar como Alumno</h2>
+<div class="ui middle aligned center aligned two column grid">
+  <div class="column">
+    <h2 class="ui green image header">
+      <%= image_tag "logo.png", class: "image" %>
+      <div class="content">
+        Iniciar Sesión como Alumno
+      </div>
+    </h2>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "ui large form" }) do |f| %> 
+      <div class="ui stacked segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <%= f.email_field :email, autofocus: true, placeholder: "Correo Electrónico", autocomplete: "email" %>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <%= f.password_field :password, placeholder: "Contraseña", autocomplete: "off" %>
+          </div>
+        </div>
+        <%= f.submit "Iniciar Sesión", class: "ui fluid large submit green button" %>
+      </div>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email, "Correo Electrónico" %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+      <div class="ui error message"></div>
 
-  <div class="field">
-    <%= f.label :password, "Contraseña" %>
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+    <% end %>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me, "¿Recordarme en este equipo?" %>
+    <div class="ui message">
+      <%= render "students/shared/links" %>
     </div>
-  <% end -%>
-
-  <div class="actions">
-    <%= f.submit "Iniciar Sesión" %>
   </div>
-<% end %>
-
-<%= render "students/shared/links" %>
+</div>

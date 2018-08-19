@@ -1,64 +1,76 @@
-<h2>Registro de Mentor</h2>
+<div class="ui middle aligned center aligned two column grid">
+  <div class="column">
+    <h2 class="ui green image header">
+      <%= image_tag "logo.png", class: "image" %>
+      <div class="content">
+        Registrarse como Mentor
+      </div>
+    </h2>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "ui large form" }) do |f| %> 
+      <div class="ui stacked segment">
+        <div class="field">
+          <%= f.label :first_name, "Nombre(s)" %>
+          <%= f.text_field :first_name %>
+        </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= devise_error_messages! %>
+        <div class="field">
+          <%= f.label :last_name, "Apellido(s)" %>
+          <%= f.text_field :last_name %>
+        </div>
 
-  <div class="field">
-    <%= f.label :first_name, "Nombre(s)" %>
-    <%= f.text_field :first_name %>
-  </div>
+        <div class="field">
+          <%= f.label :rut, "RUN" %>
+          <%= f.text_field :rut %>
+        </div>
 
-  <div class="field">
-    <%= f.label :last_name, "Apellido(s)" %>
-    <%= f.text_field :last_name %>
-  </div>
+        <div class="field">
+          <%= f.label :address, "Dirección y Comuna" %>
+          <%= f.text_field :address %>
+        </div>
 
-  <div class="field">
-    <%= f.label :rut, "RUN" %>
-    <%= f.text_field :rut %>
-  </div>
+        <div class="field">
+          <%= f.label :phone, "Teléfono" %>
+          <%= f.text_field :phone %>
+        </div>
 
-  <div class="field">
-    <%= f.label :address, "Dirección y Comuna" %>
-    <%= f.text_field :address %>
-  </div>
+        <div class="field">
+          <%= f.label :specialty, "Especialidad" %>
+          <%= f.text_area :specialty %>
+        </div>
 
-  <div class="field">
-    <%= f.label :phone, "Teléfono" %>
-    <%= f.text_field :phone %>
-  </div>
+        <div class="field">
+          <%= f.label :motivation, "Motivación" %>
+          <%= f.text_area :motivation %>
+        </div>
 
-  <div class="field">
-    <%= f.label :specialty, "Especialidad" %>
-    <%= f.text_area :specialty %>
-  </div>
+        <div class="field">
+          <%= f.label :email, "Correo Electrónico" %>
+          <%= f.email_field :email, autocomplete: "email" %>
+        </div>
 
-  <div class="field">
-    <%= f.label :motivation, "Motivación" %>
-    <%= f.text_area :motivation %>
-  </div>
+        <div class="field">
+          <%= f.label :password, "Contraseña" %>
+          <%= f.password_field :password, autocomplete: "off" %>
+          <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> caracteres mínimos)</em>
+          <% end %>
+        </div>
 
-  <div class="field">
-    <%= f.label :email, "Correo Electrónico" %>
-    <%= f.email_field :email, autocomplete: "email" %>
-  </div>
+        <div class="field">
+          <%= f.label :password_confirmation, "Confirma tu Contraseña" %>
+          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+        </div>
+        <%= f.submit "Registrarse", class: "ui fluid large submit green button" %>
+      </div>
 
-  <div class="field">
-    <%= f.label :password, "Contraseña" %>
-    <%= f.password_field :password, autocomplete: "off" %>
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> caracteres mínimos)</em>
+      <div class="ui error message">
+        <%= devise_error_messages! %>
+      </div>
+
     <% end %>
-  </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirma tu Contraseña" %>
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    <div class="ui message">
+      <%= render "mentors/shared/links" %>
+    </div>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Regístrate" %>
-  </div>
-<% end %>
-
-<%= render "mentors/shared/links" %>
+</div>

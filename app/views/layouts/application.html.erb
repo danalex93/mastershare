@@ -1,40 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <title>Mastershare</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <!-- Stylesheets -->
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    controller_name, media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <!-- Javascripts -->
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag controller_name, 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <header>
-      <nav>
-        <li><%= link_to "Talleres", workshops_url %></li>
-        <% if mentor_signed_in? %>
-          <li>Hola! <%= current_mentor.full_name %></li>
-          <li><%= link_to "Cerrar Sesión Mentor", destroy_mentor_session_url, method: :delete %></li>
-        <% elsif student_signed_in? %>
-          <li>Hola! <%= current_student.full_name %></li>
-          <li><%= link_to "Cerrar Sesión Alumno", destroy_student_session_url, method: :delete %></li>
-        <% else %>
-          <li><%= link_to "Inicia Sesión como Mentor", new_mentor_session_url %></li>
-          <li><%= link_to "Inicia Sesión como Alumno", new_student_session_url %></li>
-          <li><%= link_to "Regístrate como Mentor", new_mentor_registration_url %></li>
-          <li><%= link_to "Regístrate como Alumno", new_student_registration_url %></li>
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <%= link_to root_path, class: "header item" do %>
+          <%= image_tag "logo.png", class: "logo" %>
+          MasterShare
         <% end %>
-      </nav>
-    </header>
-    <content>
+        <%= link_to "Talleres", workshops_url, class: "item" %>>
+        <% if mentor_signed_in? %>
+          <div class="ui simple dropdown item">
+            <%= current_mentor.full_name %>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <%= link_to "Cerrar Sesión", destroy_mentor_session_url, method: :delete, class: "item" %>
+            </div>
+          </div>
+        <% elsif student_signed_in? %>
+          <div class="ui simple dropdown item">
+            <%= current_student.full_name %>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <%= link_to "Cerrar Sesión", destroy_student_session_url, method: :delete, class: "item" %>
+            </div>
+          </div>
+        <% else %>
+          <div class="ui simple dropdown item">
+            Iniciar Sesión
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <%= link_to "Iniciar como Mentor", new_mentor_session_url, class: "item" %>
+              <%= link_to "Iniciar como Alumno", new_student_session_url, class: "item" %>
+            </div>
+          </div>
+          <div class="ui simple dropdown item">
+            Registrarse
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <%= link_to "Registrarse como Mentor", new_mentor_registration_url, class: "item" %>
+              <%= link_to "Registrarse como Alumno", new_student_registration_url, class: "item" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="ui main container">
       <% if notice %>
-        <p id="notice"><%= notice %></p>
+        <div class="ui info message">
+          <div class="header">
+            Mensaje del sistema:
+          </div>
+          <i class="close icon"></i>
+          <p><%= notice %></p>
+        </div>
       <% elsif alert %>
-        <p id="alert"><%= alert %></p>
+        <div class="ui negative message">
+          <div class="header">
+            Hemos encontrado un problema:
+          </div>
+          <i class="close icon"></i>
+          <p><%= alert %></p>
+        </div>
       <% end %>
 
       <%= yield %>
-    </content>
+    </div>
   </body>
 </html>
