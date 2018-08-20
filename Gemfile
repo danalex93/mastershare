@@ -30,5 +30,9 @@ end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
+# UI
 gem 'rails-assets-jquery', source: 'https://rails-assets.org'
 gem 'rails-assets-semantic', source: 'https://rails-assets.org'
+
+# Can Can Can for Permissions
+gem 'cancancan', '~> 2.0'

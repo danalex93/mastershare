@@ -1,5 +1,6 @@
 class WorkshopsController < ApplicationController
   before_action :set_workshop, only: [:show, :edit, :update, :destroy]
+  authorize_resource
 
   # GET /workshops
   # GET /workshops.json
@@ -18,8 +19,7 @@ class WorkshopsController < ApplicationController
   # GET /workshops/new
   def new
     @workshop = Workshop.new
-    @mentors = Mentor.all
-    @semesters = Semester.all
+    @semesters = Semester.all.order(id: :desc)
   end
 
   # GET /workshops/1/edit
@@ -32,6 +32,7 @@ class WorkshopsController < ApplicationController
   # POST /workshops.json
   def create
     @workshop = Workshop.new(workshop_params)
+    @workshop.mentor = current_mentor
 
     respond_to do |format|
       if @workshop.save

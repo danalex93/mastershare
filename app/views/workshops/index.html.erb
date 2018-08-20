@@ -23,9 +23,7 @@
         <th>Descripción</th>
         <th>Horario</th>
         <th>Cupos</th>
-        <% if mentor_signed_in? or student_signed_in? %> 
-          <th></th>
-        <% end %>
+        <th>Opciones</th>
       </tr>
     </thead>
 
@@ -37,21 +35,16 @@
           <td><%= workshop.description %></td>
           <td><%= workshop.schedule %></td>
           <td><%= workshop.quotas %></td>
-          <% if mentor_signed_in? and current_mentor == workshop.mentor %>
-            <td>
-              <div class="ui three buttons">
+          <td>
+            <div class="ui two buttons">
+              <% if can? :show, workshop %>
                 <%= link_to 'Ver', workshop, class: "ui green button" %>
+              <% end %>
+              <% if can? :update, workshop %>
                 <%= link_to 'Editar', edit_workshop_path(workshop), class: "ui yellow button" %>
-                <%= link_to 'Borrar', workshop, method: :delete, data: { confirm: '¿Estás segura/o?' }, class: "ui red button" %>
-              </div>
-            </td>
-          <% elsif mentor_signed_in? or student_signed_in? %>
-            <td>
-              <div class="ui buttons">
-                <%= link_to 'Ver', workshop, class: "ui gren button" %>
-              </div>
-            </td>
-          <% end %>
+              <% end %>
+            </div>
+          </td>
         </tr>
       <% end %>
     </tbody>

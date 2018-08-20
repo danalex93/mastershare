@@ -1,5 +1,6 @@
 class TopicsController < ApplicationController
   before_action :set_topic, only: [:show, :edit, :update, :destroy]
+  authorize_resource
 
   # GET /topics
   # GET /topics.json

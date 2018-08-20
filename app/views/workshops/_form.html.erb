@@ -1,4 +1,5 @@
-<%= form_with(model: workshop, local: true) do |form| %>
+<%= form_with(model: workshop, local: true, html: { class: "ui large form" }) do |form| %>
+  <div class="ui stacked segment">
   <% if workshop.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(workshop.errors.count, "error") %> prohibited this workshop from being saved:</h2>
@@ -10,11 +11,6 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= form.label :mentor_id, "Mentor" %>
-    <%= form.collection_select :mentor_id, @mentors, :id, :full_name %>
-  </div>
 
   <div class="field">
     <%= form.label :semester_id, "Semestre" %>
@@ -42,6 +38,6 @@
   </div>
 
   <div class="actions">
-    <%= form.submit "Aceptar" %>
+    <%= form.submit "Aceptar", class: "ui fluid large submit green button" %>
   </div>
 <% end %>

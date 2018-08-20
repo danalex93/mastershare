@@ -1,5 +1,6 @@
 class EnrollmentsController < ApplicationController
   before_action :set_enrollment, only: [:show, :edit, :update, :destroy]
+  authorize_resource
 
   # GET /enrollments
   # GET /enrollments.json

@@ -1,5 +1,11 @@
-<h1>Nuevo Taller</h1>
-
-<%= render 'form', workshop: @workshop %>
-
-<%= link_to 'Volver', workshops_path %>
+<div class="ui middle aligned center aligned two column grid">
+  <div class="column">
+    <h2 class="ui green image header">
+      <%= image_tag "logo.png", class: "image" %>
+      <div class="content">
+        Registrar Taller
+      </div>
+    </h2>
+    <%= render 'form', workshop: @workshop %>
+  </div>
+</div>
