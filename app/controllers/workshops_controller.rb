@@ -14,8 +14,11 @@ class WorkshopsController < ApplicationController
   # GET /workshops/1
   # GET /workshops/1.json
   def show
+    @mentor = @workshop.mentor
+    @quotas = @workshop.quotas - @workshop.enrollments.count
     @topics = @workshop.topics.last(5)
     @materials = @workshop.materials.last(5)
+    @enrollment = Enrollment.new
   end
 
   # GET /workshops/new

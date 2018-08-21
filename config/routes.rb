@@ -10,12 +10,12 @@ Rails.application.routes.draw do
     passwords: "mentors/passwords",
     registrations: "mentors/registrations"  
   }
+  resources :enrollments
   resources :workshops do
     resources :topics do 
       resources :comments
     end
     resources :materials
-    resources :enrollments
   end
   # resources :semesters
 end

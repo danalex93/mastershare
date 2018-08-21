@@ -1,28 +1,56 @@
 <h1 class="ui header">
-  <%= @workshop.title %>
-  <div class="sub header">
-    Dictado por: <%= @workshop.mentor.full_name %>
+  <i class="book icon"></i>
+  <div class="content">
+    <%= @workshop.title %>
+    <div class="sub header">
+      Dictado por: <%= @workshop.mentor.full_name %>
+    </div>
+    <div class="sub header">
+      Semestre: <%= @workshop.semester.identifier %>
+    </div>
   </div>
 </h1>
 
-<div class="ui segments">
-  <div class="ui segment">
-    <h4 class="ui header">Descripción del taller</h4>
-    <p><%= @workshop.description %></p>
+<div class="ui three cards">
+  <div class="card">
+    <div class="content">
+      <div class="header">Descripción del taller</div>
+      <div class="description">
+        <p><%= @workshop.description %></p>
+      </div>
+    </div>
   </div>
 
-  <div class="ui segment">
-    <h4 class="ui header">Horario</h4>
-    <p><%= @workshop.schedule %></p>
+  <div class="card">
+    <div class="content">
+      <div class="header">Horario</div>
+      <div class="description">
+        <p><%= @workshop.schedule %></p>
+      </div>
+    </div>
+    <div class="extra content">
+      <div class="header">Cupos</div>
+      <div class="description">
+        <p><%= @workshop.quotas %>. <%= @quotas %> disponible(s).</p>
+      </div>
+    </div>
   </div>
 
-  <div class="ui segment">
-    <p><strong>Cupos:</strong> <%= @workshop.quotas %></p>
+  <div class="ui card">
+    <div class="content">
+      <div class="header"><%= @mentor.full_name %></div>
+      <div class="meta">Mentor</div>
+      <div class="description">
+        <p><strong>Especialidad:</strong> <%= @mentor.specialty %></p>
+        <p><strong>Motivación:</strong> <%= @mentor.motivation %></p>
+      </div>
+    </div>
   </div>
 </div>
 
+
 <% if not @topics.map{|t| can? :read, t}.include?(false) and not @materials.map{|m| can? :read, m}.include?(false) %>
-  <div class="ui horizontal segments">
+  <div class="ui two horizontal segments">
     <div class="ui segment">
       <h4 class="ui header">
         Ultimos 5 Topicos
@@ -31,6 +59,7 @@
         <div class="ui relaxed divided list">
           <% @topics.each do |topic| %>
             <div class="item">
+              <i class="large middle aligned comment alternate outline icon"></i>
               <div class="content">
                 <a class="header"><%= link_to topic.title, [@workshop, topic] %></a>
                 <div class="description">Por <%= topic.student.full_name %> el <%= topic.created_at.strftime("%d/%m/%Y a las %H:%M") %></div>
@@ -53,6 +82,7 @@
         <div class="ui relaxed divided list">
           <% @materials.each do |material| %>
             <div class="item">
+              <i class="large middle aligned file outline icon"></i>
               <div class="content">
                 <a class="header"><%= link_to material.title, [@workshop, material] %></a>
                 <div class="description"><%= material.created_at.strftime("%d/%m/%Y %H:%M") %></div>
@@ -67,5 +97,15 @@
         <p>No existe ningún tópico para este taller.</p>
       <% end %>
     </div>
+  </div>
+<% elsif student_signed_in? and can? :create, Enrollment and @quotas > 0 %>
+  <div class="ui orange segment">
+    <h4 class="ui header">Inscripción de Taller</h4>
+    <p>Existe(n) <%= @quotas %> cupo(s) disponible(s). ¿Deseas inscribir este curso?</p>
+    <%= form_with(model: @enrollment, local: true) do |f| %>
+      <%= f.hidden_field :workshop_id, value: @workshop.id %>
+      <%= f.hidden_field :student_id, value: current_student.id %>
+      <%= f.submit "Inscribir Curso", class: "ui fluid orange button", data: { confirm: "¿Estas segura/o que deseas inscribir este curso?" } %>
+    <% end %>
   </div>
 <% end %>
