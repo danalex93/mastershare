@@ -14,6 +14,8 @@ class WorkshopsController < ApplicationController
   # GET /workshops/1
   # GET /workshops/1.json
   def show
+    @topics = @workshop.topics.last(5)
+    @materials = @workshop.materials.last(5)
   end
 
   # GET /workshops/new

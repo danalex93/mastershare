@@ -1,29 +1,71 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Mentor:</strong>
-  <%= @workshop.mentor %>
-</p>
-
-<p>
-  <strong>Title:</strong>
+<h1 class="ui header">
   <%= @workshop.title %>
-</p>
+  <div class="sub header">
+    Dictado por: <%= @workshop.mentor.full_name %>
+  </div>
+</h1>
 
-<p>
-  <strong>Description:</strong>
-  <%= @workshop.description %>
-</p>
+<div class="ui segments">
+  <div class="ui segment">
+    <h4 class="ui header">Descripción del taller</h4>
+    <p><%= @workshop.description %></p>
+  </div>
 
-<p>
-  <strong>Schedule:</strong>
-  <%= @workshop.schedule %>
-</p>
+  <div class="ui segment">
+    <h4 class="ui header">Horario</h4>
+    <p><%= @workshop.schedule %></p>
+  </div>
 
-<p>
-  <strong>Quotas:</strong>
-  <%= @workshop.quotas %>
-</p>
+  <div class="ui segment">
+    <p><strong>Cupos:</strong> <%= @workshop.quotas %></p>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_workshop_path(@workshop) %> |
-<%= link_to 'Back', workshops_path %>
+<% if not @topics.map{|t| can? :read, t}.include?(false) and not @materials.map{|m| can? :read, m}.include?(false) %>
+  <div class="ui horizontal segments">
+    <div class="ui segment">
+      <h4 class="ui header">
+        Ultimos 5 Topicos
+      </h4>
+      <% if @topics.any? %>
+        <div class="ui relaxed divided list">
+          <% @topics.each do |topic| %>
+            <div class="item">
+              <div class="content">
+                <a class="header"><%= link_to topic.title, [@workshop, topic] %></a>
+                <div class="description">Por <%= topic.student.full_name %> el <%= topic.created_at.strftime("%d/%m/%Y a las %H:%M") %></div>
+              </div>
+            </div>
+            <div class="item">
+              <%= link_to "Ver todos los Tópicos", workshop_topics_url(@workshop), class: "ui fluid orange button" %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No existe ningún tópico para este taller.</p>
+      <% end %>
+    </div>
+    <div class="ui segment">
+      <h4 class="ui header">
+        Últimos 5 Materiales
+      </h4>
+      <% if @materials.any? %>
+        <div class="ui relaxed divided list">
+          <% @materials.each do |material| %>
+            <div class="item">
+              <div class="content">
+                <a class="header"><%= link_to material.title, [@workshop, material] %></a>
+                <div class="description"><%= material.created_at.strftime("%d/%m/%Y %H:%M") %></div>
+              </div>
+            </div>
+          <% end %>
+          <div class="item">
+            <%= link_to "Ver Todos los Materiales", workshop_materials_url(@workshop), class: "ui fluid orange button" %>
+          </div>
+        </div>
+      <% else %>
+        <p>No existe ningún tópico para este taller.</p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
