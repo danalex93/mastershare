@@ -1,31 +1,47 @@
-<p id="notice"><%= notice %></p>
+<h1 class="ui header">
+  <i class="comment alternate outline icon"></i>
+  <div class="content">
+    Foro
+    <div class="sub header">
+      <%= @workshop.title %>
+    </div>
+  </div>
+</h1>
 
-<h1>Topics</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Workshop</th>
-      <th>Title</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @topics.each do |topic| %>
-      <tr>
-        <td><%= topic.workshop %></td>
-        <td><%= topic.title %></td>
-        <td><%= topic.description %></td>
-        <td><%= link_to 'Show', topic %></td>
-        <td><%= link_to 'Edit', edit_topic_path(topic) %></td>
-        <td><%= link_to 'Destroy', topic, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="ui segment">
+  <div class="ui relaxed divided list">
+    <% if can? :create, Topic %>
+      <div class="item">
+        <%= link_to "Crear un Nuevo Tópico", new_workshop_topic_url(@workshop), class: "ui fluid orange button" %>
+      </div>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Topic', new_topic_path %>
+    <% if @topics.any? %>
+      <% @topics.each do |topic| %>
+        <div class="item">
+          <i class="large middle aligned comment alternate outline icon"></i>
+          <div class="content">
+            <a class="header">
+              <%= link_to topic.title, [@workshop, topic] %>
+            </a>
+            <div class="description">
+              <strong>Iniciado</strong> por <%= topic.student.full_name %> el <%= topic.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+            </div>
+            <div class="description">
+              <% if topic.comments.any? %>
+                <p><strong>Última respuesta</strong> de <%= topic.comments.last.student.full_name %> el <%= topic.comments.last.created_at.strftime("%d/%m/%Y a las %H:%M") %></p> 
+              <% else %>
+                <p>Este tópico no tiene ninguna respuesta.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="item">
+        <div class="content">
+          <p>No existe ningún tópico para este taller.</p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

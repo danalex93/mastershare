@@ -21,7 +21,7 @@
           <%= image_tag "logo.png", class: "logo" %>
           MasterShare
         <% end %>
-        <%= link_to "Talleres", workshops_url, class: "item" %>>
+        <%= link_to "Talleres", workshops_url, class: "item" %>
         <% if mentor_signed_in? %>
           <div class="ui simple dropdown item">
             <%= current_mentor.full_name %>
@@ -78,6 +78,10 @@
           <p><%= alert %></p>
         </div>
       <% end %>
+
+      <div class="ui breadcrumb">
+        <%= render_breadcrumbs %>
+      </div>
 
       <%= yield %>
     </div>

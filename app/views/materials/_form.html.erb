@@ -1,27 +1,29 @@
-<%= form_with(model: material, local: true) do |form| %>
-  <% if material.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(material.errors.count, "error") %> prohibited this material from being saved:</h2>
+<%= form_with(model: [@workshop, material], local: true, html: { multipart: true, class: "ui large form" }) do |form| %>
+  <div class="ui stacked segment">
+    <% if material.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(material.errors.count, "error") %> prohibited this material from being saved:</h2>
 
-      <ul>
-      <% material.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+        <ul>
+        <% material.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field">
+      <%= form.label :title, "Título" %>
+      <%= form.text_field :title %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-  </div>
+    <div class="field">
+      <%= form.label :file, "Archivo" %>
+      <%= form.file_field :file %>
+    </div>  
 
-  <div class="field">
-    <%= form.label :workshop_id %>
-    <%= form.text_field :workshop_id %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
+    <div class="actions">
+      <%= form.submit "Aceptar", class: "ui fluid large submit green button" %>
+    </div>
   </div>
 <% end %>

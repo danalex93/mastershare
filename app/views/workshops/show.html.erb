@@ -62,13 +62,15 @@
               <i class="large middle aligned comment alternate outline icon"></i>
               <div class="content">
                 <a class="header"><%= link_to topic.title, [@workshop, topic] %></a>
-                <div class="description">Por <%= topic.student.full_name %> el <%= topic.created_at.strftime("%d/%m/%Y a las %H:%M") %></div>
+                <div class="description">
+                  Por <%= topic.student.full_name %> el <%= topic.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+                </div>
               </div>
             </div>
-            <div class="item">
-              <%= link_to "Ver todos los Tópicos", workshop_topics_url(@workshop), class: "ui fluid orange button" %>
-            </div>
           <% end %>
+          <div class="item">
+            <%= link_to "Ver el Foro Completo", workshop_topics_url(@workshop), class: "ui fluid orange button" %>
+          </div>
         </div>
       <% else %>
         <p>No existe ningún tópico para este taller.</p>
@@ -84,8 +86,8 @@
             <div class="item">
               <i class="large middle aligned file outline icon"></i>
               <div class="content">
-                <a class="header"><%= link_to material.title, [@workshop, material] %></a>
-                <div class="description"><%= material.created_at.strftime("%d/%m/%Y %H:%M") %></div>
+                <div class="header"><%= material.title %></div>
+                <div class="description">Subido el <%= material.created_at.strftime("%d/%m/%Y a las %H:%M") %></div>
               </div>
             </div>
           <% end %>

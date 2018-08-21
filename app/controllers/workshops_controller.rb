@@ -1,4 +1,6 @@
 class WorkshopsController < ApplicationController
+  add_breadcrumb "Talleres", :root_path
+
   before_action :set_workshop, only: [:show, :edit, :update, :destroy]
   authorize_resource
 
@@ -16,8 +18,8 @@ class WorkshopsController < ApplicationController
   def show
     @mentor = @workshop.mentor
     @quotas = @workshop.quotas - @workshop.enrollments.count
-    @topics = @workshop.topics.last(5)
-    @materials = @workshop.materials.last(5)
+    @topics = @workshop.topics.order(created_at: :desc).limit(5)
+    @materials = @workshop.materials.order(created_at: :desc).limit(5)
     @enrollment = Enrollment.new
   end
 
@@ -25,12 +27,16 @@ class WorkshopsController < ApplicationController
   def new
     @workshop = Workshop.new
     @semesters = Semester.all.order(id: :desc)
+
+    add_breadcrumb "Registrar Taller", new_workshop_url
   end
 
   # GET /workshops/1/edit
   def edit
     @mentors = Mentor.all
     @semesters = Semester.all
+
+    add_breadcrumb "Editar Taller", edit_workshop_url(@workshop)
   end
 
   # POST /workshops
@@ -78,6 +84,7 @@ class WorkshopsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_workshop
       @workshop = Workshop.find(params[:id])
+      add_breadcrumb @workshop.title, workshop_url(@workshop)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

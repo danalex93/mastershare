@@ -36,3 +36,6 @@ gem 'rails-assets-semantic', source: 'https://rails-assets.org'
 
 # Can Can Can for Permissions
 gem 'cancancan', '~> 2.0'
+
+# Breadcrumbs
+gem "breadcrumbs_on_rails"

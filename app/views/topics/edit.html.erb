@@ -1,6 +1,14 @@
-<h1>Editing Topic</h1>
-
-<%= render 'form', topic: @topic %>
-
-<%= link_to 'Show', @topic %> |
-<%= link_to 'Back', topics_path %>
+<div class="ui middle aligned center aligned two column grid">
+  <div class="column">
+    <h2 class="ui green image header">
+      <%= image_tag "logo.png", class: "image" %>
+      <div class="content">
+        Editar Tópico
+        <div class="sub header">
+          <%= @workshop.title %>
+        </div>
+      </div>
+    </h2>
+    <%= render 'form', topic: @topic %>
+  </div>
+</div>

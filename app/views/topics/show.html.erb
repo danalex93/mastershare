@@ -1,19 +1,59 @@
-<p id="notice"><%= notice %></p>
+<h1 class="ui header">
+  <i class="comment alternate outline icon"></i>
+  <div class="content">
+    <%= @topic.title %>
+    <div class="sub header">
+      Foro de <%= @workshop.title %>
+    </div>
+  </div>
+</h1>
 
-<p>
-  <strong>Workshop:</strong>
-  <%= @topic.workshop %>
-</p>
+<div class="ui segment">
+  <div class="ui relaxed divided list">
+    <div class="item">
+      <div class="content">
+        <div class="header">
+          <strong><%= @topic.student.full_name %></strong> el <%= @topic.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+        </div>
+        <div class="description">
+          <p><%= @topic.description %></p>
+          <% if can? :manage, @topic %>
+            <div class="ui buttons">
+              <%= link_to "Editar Tópico", edit_workshop_topic_url(@workshop, @topic), class: "ui orange button" %>
+              <%= link_to "Borrar Tópico", [@workshop, @topic], method: :delete, class: "ui red button", data: { confirm: "¿Estás segura/o de que quieres eliminar este tópico? Esta acción no se puede deshacer."} %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <% @topic.comments.each do |comment| %>
+      <div class="item">
+        <div class="content">
+          <div class="header">
+            <strong><%= comment.student.full_name %></strong> el <%= comment.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+          </div>
+          <div class="description">
+            <p><%= comment.content %></p>
+            <% if can? :destroy, comment %>
+              <%= link_to "Borrar Comentario", [@workshop, @topic, comment], method: :delete, class: "ui red button", data: { confirm: "¿Estás segura/o de que quieres eliminar este comentario? Esta acción no se puede deshacer."} %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <% if can? :create, Comment %>
+      <div class="item">
+        <%= form_with(model: [@workshop, @topic, @comment], local: true, html: { class: "ui form" }) do |f| %>
+          <div class="field">
+            <%= f.label :content, "Mensaje" %>
+            <%= f.text_area :content %>
+          </div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @topic.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @topic.description %>
-</p>
-
-<%= link_to 'Edit', edit_topic_path(@topic) %> |
-<%= link_to 'Back', topics_path %>
+          <div class="actions">
+            <%= f.submit "Comentar Tópico", class: "ui fluid orange button" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
