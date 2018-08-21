@@ -1,11 +1,17 @@
 class EnrollmentsController < ApplicationController
+  add_breadcrumb "Talleres", :root_path
+
   before_action :set_enrollment, only: [:show, :edit, :update, :destroy]
   authorize_resource
 
   # GET /enrollments
   # GET /enrollments.json
   def index
-    @enrollments = Enrollment.all
+    @semesters = Semester.all
+    if params[:semester_id].present?
+      @enrollments = Enrollment.joins(:workshop).where(workshops: { semester_id: params[:semester_id] })
+    end
+    add_breadcrumb "Inscripciones", moderate_workshops_url
   end
 
   # GET /enrollments/1
@@ -70,6 +76,6 @@ class EnrollmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def enrollment_params
-      params.require(:enrollment).permit(:student_id, :workshop_id)
+      params.require(:enrollment).permit(:student_id, :workshop_id, :confirmed)
     end
 end

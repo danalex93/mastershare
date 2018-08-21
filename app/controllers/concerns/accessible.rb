@@ -12,6 +12,8 @@ module Accessible
     elsif current_student
       flash.clear
       #redirect_to(authenticated_user_root_path) && return
+    elsif current_moderator
+      flash.clear
     end
   end
 end

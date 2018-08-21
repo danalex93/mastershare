@@ -9,15 +9,24 @@ class WorkshopsController < ApplicationController
   def index
     @semesters = Semester.all
     if params[:semester_id].present?
-      @workshops = Workshop.where(semester_id: params[:semester_id])
+      @workshops = Workshop.approved.where(semester_id: params[:semester_id], institution_id: current_institution.id)
     end
+  end
+
+  def moderate
+    @semesters = Semester.all
+    if params[:semester_id].present?
+      @workshops = Workshop.where(semester_id: params[:semester_id], institution_id: current_institution.id)
+    end
+
+    add_breadcrumb "Moderar", moderate_workshops_url
   end
 
   # GET /workshops/1
   # GET /workshops/1.json
   def show
     @mentor = @workshop.mentor
-    @quotas = @workshop.quotas - @workshop.enrollments.count
+    @quotas = @workshop.quotas - @workshop.enrollments.confirmed.count
     @topics = @workshop.topics.order(created_at: :desc).limit(5)
     @materials = @workshop.materials.order(created_at: :desc).limit(5)
     @enrollment = Enrollment.new
@@ -61,7 +70,11 @@ class WorkshopsController < ApplicationController
   def update
     respond_to do |format|
       if @workshop.update(workshop_params)
-        format.html { redirect_to @workshop, notice: 'Workshop was successfully updated.' }
+        if params[:workshop][:approved].present?
+          format.html { redirect_to moderate_workshops_url(semester_id: @workshop.semester_id), notice: 'Workshop was successfully updated.' }
+        else
+          format.html { redirect_to @workshop, notice: 'Workshop was successfully updated.' }
+        end
         format.json { render :show, status: :ok, location: @workshop }
       else
         format.html { render :edit }
@@ -89,6 +102,6 @@ class WorkshopsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def workshop_params
-      params.require(:workshop).permit(:mentor_id, :semester_id, :title, :description, :schedule, :quotas)
+      params.require(:workshop).permit(:mentor_id, :semester_id, :title, :description, :schedule, :quotas, :approved)
     end
 end

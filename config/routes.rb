@@ -10,8 +10,14 @@ Rails.application.routes.draw do
     passwords: "mentors/passwords",
     registrations: "mentors/registrations"  
   }
+  devise_for :moderators, path: "moderators", controllers: {
+    sessions: "moderators/sessions",
+    passwords: "mentors/passwords"
+  }
   resources :enrollments
   resources :workshops do
+    get :moderate, on: :collection
+
     resources :topics do 
       resources :comments
     end

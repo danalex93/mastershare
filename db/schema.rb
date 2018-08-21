@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_195150) do
+ActiveRecord::Schema.define(version: 2018_08_21_224310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,8 +51,15 @@ ActiveRecord::Schema.define(version: 2018_08_01_195150) do
     t.bigint "workshop_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "confirmed", default: false, null: false
     t.index ["student_id"], name: "index_enrollments_on_student_id"
     t.index ["workshop_id"], name: "index_enrollments_on_workshop_id"
+  end
+
+  create_table "institutions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "materials", force: :cascade do |t|
@@ -61,6 +68,28 @@ ActiveRecord::Schema.define(version: 2018_08_01_195150) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["workshop_id"], name: "index_materials_on_workshop_id"
+  end
+
+  create_table "moderators", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.string "first_name", default: "", null: false
+    t.string "last_name", default: "", null: false
+    t.string "role", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "institution_id"
+    t.index ["email"], name: "index_moderators_on_email", unique: true
+    t.index ["institution_id"], name: "index_moderators_on_institution_id"
+    t.index ["reset_password_token"], name: "index_moderators_on_reset_password_token", unique: true
   end
 
   create_table "semesters", force: :cascade do |t|
@@ -91,7 +120,9 @@ ActiveRecord::Schema.define(version: 2018_08_01_195150) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type"
+    t.bigint "institution_id"
     t.index ["email"], name: "index_students_on_email", unique: true
+    t.index ["institution_id"], name: "index_students_on_institution_id"
     t.index ["reset_password_token"], name: "index_students_on_reset_password_token", unique: true
   end
 
@@ -115,6 +146,9 @@ ActiveRecord::Schema.define(version: 2018_08_01_195150) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "semester_id"
+    t.boolean "approved", default: false, null: false
+    t.bigint "institution_id"
+    t.index ["institution_id"], name: "index_workshops_on_institution_id"
     t.index ["semester_id"], name: "index_workshops_on_semester_id"
   end
 
@@ -123,7 +157,10 @@ ActiveRecord::Schema.define(version: 2018_08_01_195150) do
   add_foreign_key "enrollments", "students"
   add_foreign_key "enrollments", "workshops"
   add_foreign_key "materials", "workshops"
+  add_foreign_key "moderators", "institutions"
+  add_foreign_key "students", "institutions"
   add_foreign_key "topics", "students"
   add_foreign_key "topics", "workshops"
+  add_foreign_key "workshops", "institutions"
   add_foreign_key "workshops", "semesters"
 end

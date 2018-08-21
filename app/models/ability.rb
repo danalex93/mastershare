@@ -1,9 +1,11 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(mentor, student)
+  def initialize(moderator, mentor, student)
     can :read, Workshop
-    if mentor
+    if moderator
+      can :manage, :all
+    elsif mentor
       can :manage, Workshop, mentor_id: mentor.id
       can :manage, Topic do |topic|
         topic.mentor.id == mentor.id
@@ -16,14 +18,14 @@ class Ability
       end
     elsif student
       can :manage, Topic do |topic|
-        student.enrollments.map(&:workshop_id).include?(topic.workshop_id)
+        student.enrollments.confirmed.map(&:workshop_id).include?(topic.workshop_id)
       end
       can :read, Comment do |comment|
-        student.enrollments.map(&:workshop_id).include?(comment.workshop_id)
+        student.enrollments.confirmed.map(&:workshop_id).include?(comment.workshop_id)
       end
       can :manage, Comment, student_id: student.id
       can :read, Material do |material|
-        student.enrollments.map(&:workshop_id).include?(material.workshop_id)
+        student.enrollments.confirmed.map(&:workshop_id).include?(material.workshop_id)
       end
       can :manage, Enrollment, student_id: student.id
     else

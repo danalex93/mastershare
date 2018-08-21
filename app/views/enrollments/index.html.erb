@@ -1,29 +1,52 @@
-<p id="notice"><%= notice %></p>
+<h1 class="ui header">Moderar Inscripciones</h1>
 
-<h1>Enrollments</h1>
+<section class="ui segment">
+  <%= form_tag(enrollments_url, method: :get, class: "ui form") do %>
+    <h4 class="ui dividing header">Filtro por Semestre:</h4>
+    <div class="fields">
+      <div class="twelve wide field">    
+        <%= collection_select nil, :semester_id, @semesters, :id, :identifier, selected: params[:semester_id], include_blank: "Selecciona un semestre..." %>
+      </div>
+      <div class="four wide field">
+        <%= submit_tag "Filtrar", class: "fluid ui button" %>
+      </div>
+    </div>
+  <% end %>
+</section>
 
-<table>
-  <thead>
-    <tr>
-      <th>Student</th>
-      <th>Workshop</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @enrollments.each do |enrollment| %>
+<% if @enrollments %>
+  <table class="ui celled table">
+    <thead>
       <tr>
-        <td><%= enrollment.student %></td>
-        <td><%= enrollment.workshop %></td>
-        <td><%= link_to 'Show', enrollment %></td>
-        <td><%= link_to 'Edit', edit_enrollment_path(enrollment) %></td>
-        <td><%= link_to 'Destroy', enrollment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th>Alumno</th>
+        <th>Taller</th>
+        <th>Cupos Disponibles</th>
+        <th>Opciones</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
 
-<br>
-
-<%= link_to 'New Enrollment', new_enrollment_path %>
+    <tbody>
+      <% @enrollments.each do |enrollment| %>
+        <tr>
+         <td><%= enrollment.student.full_name %></td>
+         <td><%= enrollment.workshop.title %></td>
+         <td><%= enrollment.workshop.available_quotas %></td>
+         <td>
+            <% if enrollment.confirmed %>
+              Confirmado
+            <% elsif enrollment.workshop.available_quotas > 0 %>
+              <%= form_with(model: enrollment, local: true, html: { class: "ui form" }) do |f| %>
+                <%= f.hidden_field :confirmed, value: true %>
+                <div class="actions">
+                  <%= f.submit "Confirmar Preinscripción", class: "ui orange button", data: { confirm: "¿Estás segura/o que quieres inscribir a este alumno en el taller? Esta acción no se podrá deshacer."} %>
+                </div>
+              <% end %>
+            <% else %>
+              Sin cupos disponibles.
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -39,13 +39,24 @@
               <%= link_to "Cerrar Sesión", destroy_student_session_url, method: :delete, class: "item" %>
             </div>
           </div>
+        <% elsif moderator_signed_in? %>
+          <div class="ui simple dropdown item">
+            <%= current_moderator.full_name %>
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <%= link_to "Moderar Talleres", moderate_workshops_url, class: "item" %>
+              <%= link_to "Moderar Inscripciones", enrollments_url, class: "item" %>
+              <%= link_to "Cerrar Sesión", destroy_moderator_session_url, method: :delete, class: "item" %>
+            </div>
+          </div>
         <% else %>
           <div class="ui simple dropdown item">
             Iniciar Sesión
             <i class="dropdown icon"></i>
             <div class="menu">
-              <%= link_to "Iniciar como Mentor", new_mentor_session_url, class: "item" %>
               <%= link_to "Iniciar como Alumno", new_student_session_url, class: "item" %>
+              <%= link_to "Iniciar como Mentor", new_mentor_session_url, class: "item" %>
+              <%= link_to "Iniciar como Moderador", new_moderator_session_url, class: "item" %>
             </div>
           </div>
           <div class="ui simple dropdown item">

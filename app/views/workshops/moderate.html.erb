@@ -1,0 +1,67 @@
+<h1 class="ui header">Moderar Talleres</h1>
+
+<section class="ui segment">
+  <%= form_tag(moderate_workshops_url, method: :get, class: "ui form") do %>
+    <h4 class="ui dividing header">Filtro por Semestre:</h4>
+    <div class="fields">
+      <div class="twelve wide field">    
+        <%= collection_select nil, :semester_id, @semesters, :id, :identifier, selected: params[:semester_id], include_blank: "Selecciona un semestre..." %>
+      </div>
+      <div class="four wide field">
+        <%= submit_tag "Filtrar", class: "fluid ui button" %>
+      </div>
+    </div>
+  <% end %>
+</section>
+
+<% if @workshops %>
+  <% if @workshops.empty? %>
+    <p>No existen talleres para el semestre seleccionado.</p>
+  <% else %>
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Mentor</th>
+          <th>Descripción</th>
+          <th>Horario</th>
+          <th>Cupos</th>
+          <th>Cupos disponibles</th>
+          <th>Opciones</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @workshops.each do |workshop| %>
+          <tr>
+            <td><%= workshop.title %></td>
+            <td><%= workshop.mentor.full_name %></td>
+            <td><%= workshop.description %></td>
+            <td><%= workshop.schedule %></td>
+            <td><%= workshop.quotas %></td>
+            <td><%= workshop.available_quotas %></td>
+            <td>
+              <div class="ui three buttons">
+                <%= link_to 'Ver', workshop, class: "ui green button" %>
+                <%= link_to 'Editar', edit_workshop_path(workshop), class: "ui yellow button" %>
+              </div>
+            </td>
+            <td>
+              <% if workshop.approved? %>
+                Aprobado
+              <% else %>
+                <%= form_with(model: workshop, local: true, html: { class: "ui form" }) do |f| %>
+                  <%= f.hidden_field :approved, value: true %>
+                  <div class="actions">
+                    <%= f.submit "Aprobar Taller", class: "ui orange button", data: { confirm: "¿Estás segura/o que quieres aprobar este taller? Esta acción no se podrá deshacer."} %>
+                  </div>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+<% end %>
