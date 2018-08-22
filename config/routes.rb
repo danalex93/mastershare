@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :enrollments
   resources :workshops do
     get :moderate, on: :collection
+    get :my, on: :collection
 
     resources :topics do 
       resources :comments

@@ -7,6 +7,7 @@ class Ability
       can :manage, :all
     elsif mentor
       can :manage, Workshop, mentor_id: mentor.id
+      can :my, Workshop
       can :manage, Topic do |topic|
         topic.mentor.id == mentor.id
       end
@@ -17,6 +18,7 @@ class Ability
         material.mentor.id == mentor.id
       end
     elsif student
+      can :my, Workshop
       can :manage, Topic do |topic|
         student.enrollments.confirmed.map(&:workshop_id).include?(topic.workshop_id)
       end

@@ -1,52 +1,62 @@
-<h1 class="ui header">Talleres</h1>
+<% if @current_institution.nil? %>
+  <h1 class="ui header">Bienvenido a MasterShare</h1>
 
-<section class="ui segment">
-  <%= form_tag(workshops_url, method: :get, class: "ui form") do %>
-    <h4 class="ui dividing header">Filtro por Semestre:</h4>
-    <div class="fields">
-      <div class="twelve wide field">    
-        <%= collection_select nil, :semester_id, @semesters, :id, :identifier, selected: params[:semester_id], include_blank: "Selecciona un semestre..." %>
+  <section class="ui orange raised segment">
+    <h2 class="ui orange header">No has iniciado sesión</h2>
+    <p>Necesitamos que inicies sesión o te registres para conocer los talleres de tu institución. Puedes encontrar las opciones en la parte superior.</p>
+  </section>
+
+<% else %>
+  <h1 class="ui header">Talleres de <%= @current_institution.name %></h1>
+
+  <section class="ui segment">
+    <%= form_tag(workshops_url, method: :get, class: "ui form") do %>
+      <h4 class="ui dividing header">Filtro por Semestre:</h4>
+      <div class="fields">
+        <div class="twelve wide field">    
+          <%= collection_select nil, :semester_id, @semesters, :id, :identifier, selected: params[:semester_id], include_blank: "Selecciona un semestre..." %>
+        </div>
+        <div class="four wide field">
+          <%= submit_tag "Filtrar", class: "fluid ui button" %>
+        </div>
       </div>
-      <div class="four wide field">
-        <%= submit_tag "Filtrar", class: "fluid ui button" %>
-      </div>
-    </div>
-  <% end %>
-</section>
+    <% end %>
+  </section>
 
-<% if @workshops %>
-  <table class="ui celled table">
-    <thead>
-      <tr>
-        <th>Título</th>
-        <th>Mentor</th>
-        <th>Descripción</th>
-        <th>Horario</th>
-        <th>Cupos</th>
-        <th>Opciones</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% @workshops.each do |workshop| %>
+  <% if @workshops %>
+    <table class="ui celled table">
+      <thead>
         <tr>
-          <td><%= workshop.title %></td>
-          <td><%= workshop.mentor.full_name %></td>
-          <td><%= workshop.description %></td>
-          <td><%= workshop.schedule %></td>
-          <td><%= workshop.quotas %></td>
-          <td>
-            <div class="ui two buttons">
-              <% if can? :show, workshop %>
-                <%= link_to 'Ver', workshop, class: "ui green button" %>
-              <% end %>
-              <% if can? :update, workshop %>
-                <%= link_to 'Editar', edit_workshop_path(workshop), class: "ui yellow button" %>
-              <% end %>
-            </div>
-          </td>
+          <th>Título</th>
+          <th>Mentor</th>
+          <th>Descripción</th>
+          <th>Horario</th>
+          <th>Cupos</th>
+          <th>Opciones</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+
+      <tbody>
+        <% @workshops.each do |workshop| %>
+          <tr>
+            <td><%= workshop.title %></td>
+            <td><%= workshop.mentor.full_name %></td>
+            <td><%= workshop.description %></td>
+            <td><%= workshop.schedule %></td>
+            <td><%= workshop.quotas %></td>
+            <td>
+              <div class="ui two buttons">
+                <% if can? :show, workshop %>
+                  <%= link_to 'Ver', workshop, class: "ui green button" %>
+                <% end %>
+                <% if can? :update, workshop %>
+                  <%= link_to 'Editar', edit_workshop_path(workshop), class: "ui yellow button" %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 <% end %>

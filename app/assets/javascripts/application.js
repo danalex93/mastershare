@@ -16,7 +16,7 @@
 //= require activestorage
 //= require turbolinks
 
-$(document).ready(mastershare);
+$(document).on("turbolinks:load", mastershare);
 
 function mastershare(){
   // Dropdowns

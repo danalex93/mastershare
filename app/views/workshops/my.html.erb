@@ -1,0 +1,40 @@
+<h1 class="ui header">Talleres de <%= @current_institution.name %></h1>
+
+<% if @workshops.any? %>
+  <table class="ui celled table">
+    <thead>
+      <tr>
+        <th>Semestre</th>
+        <th>Título</th>
+        <th>Mentor</th>
+        <th>Descripción</th>
+        <th>Horario</th>
+        <th>Cupos</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @workshops.each do |workshop| %>
+        <tr>
+          <td><%= workshop.semester.identifier %></td>
+          <td><%= workshop.title %></td>
+          <td><%= workshop.mentor.full_name %></td>
+          <td><%= workshop.description %></td>
+          <td><%= workshop.schedule %></td>
+          <td><%= workshop.quotas %></td>
+          <td>
+            <div class="ui two buttons">
+              <% if can? :show, workshop %>
+                <%= link_to 'Ver', workshop, class: "ui green button" %>
+              <% end %>
+              <% if can? :update, workshop %>
+                <%= link_to 'Editar', edit_workshop_path(workshop), class: "ui yellow button" %>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

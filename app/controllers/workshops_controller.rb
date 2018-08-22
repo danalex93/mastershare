@@ -9,17 +9,22 @@ class WorkshopsController < ApplicationController
   def index
     @semesters = Semester.all
     if params[:semester_id].present?
-      @workshops = Workshop.approved.where(semester_id: params[:semester_id], institution_id: current_institution.id)
+      @workshops = Workshop.approved.where(semester_id: params[:semester_id], institution_id: @current_institution.id)
     end
   end
 
   def moderate
     @semesters = Semester.all
     if params[:semester_id].present?
-      @workshops = Workshop.where(semester_id: params[:semester_id], institution_id: current_institution.id)
+      @workshops = Workshop.where(semester_id: params[:semester_id], institution_id: @current_institution.id)
     end
 
     add_breadcrumb "Moderar", moderate_workshops_url
+  end
+
+  def my
+    @workshops = current_mentor.workshops.order(semester_id: :desc) if mentor_signed_in?
+    @workshops ||= current_student.workshops.order(semester_id: :desc) if student_signed_in?
   end
 
   # GET /workshops/1
