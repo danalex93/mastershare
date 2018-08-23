@@ -48,66 +48,71 @@
   </div>
 </div>
 
-
-<% if not @topics.map{|t| can? :read, t}.include?(false) and not @materials.map{|m| can? :read, m}.include?(false) %>
-  <div class="ui two horizontal segments">
-    <div class="ui segment">
-      <h4 class="ui header">
-        Ultimos 5 Topicos
-      </h4>
-      <% if @topics.any? %>
-        <div class="ui relaxed divided list">
-          <% @topics.each do |topic| %>
-            <div class="item">
-              <i class="large middle aligned comment alternate outline icon"></i>
-              <div class="content">
-                <a class="header"><%= link_to topic.title, [@workshop, topic] %></a>
-                <div class="description">
-                  Por <%= topic.student.full_name %> el <%= topic.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+<% if student_signed_in? and current_student.enrollments.confirmed.map(&:workshop_id).include?(@workshop.id) %>
+  <% if not @topics.map{|t| can? :read, t}.include?(false) and not @materials.map{|m| can? :read, m}.include?(false) %>
+    <div class="ui two horizontal segments">
+      <div class="ui segment">
+        <h4 class="ui header">
+          Ultimos 5 Topicos
+        </h4>
+        <% if @topics.any? %>
+          <div class="ui relaxed divided list">
+            <% @topics.each do |topic| %>
+              <div class="item">
+                <i class="large middle aligned comment alternate outline icon"></i>
+                <div class="content">
+                  <a class="header"><%= link_to topic.title, [@workshop, topic] %></a>
+                  <div class="description">
+                    Por <%= topic.student.full_name %> el <%= topic.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+                  </div>
                 </div>
               </div>
-            </div>
-          <% end %>
-          <div class="item">
-            <%= link_to "Ver el Foro Completo", workshop_topics_url(@workshop), class: "ui fluid orange button" %>
-          </div>
-        </div>
-      <% else %>
-        <p>No existe ningún tópico para este taller.</p>
-      <% end %>
-    </div>
-    <div class="ui segment">
-      <h4 class="ui header">
-        Últimos 5 Materiales
-      </h4>
-      <% if @materials.any? %>
-        <div class="ui relaxed divided list">
-          <% @materials.each do |material| %>
+            <% end %>
             <div class="item">
-              <i class="large middle aligned file outline icon"></i>
-              <div class="content">
-                <div class="header"><%= material.title %></div>
-                <div class="description">Subido el <%= material.created_at.strftime("%d/%m/%Y a las %H:%M") %></div>
-              </div>
+              <%= link_to "Ver el Foro Completo", workshop_topics_url(@workshop), class: "ui fluid orange button" %>
             </div>
-          <% end %>
-          <div class="item">
-            <%= link_to "Ver Todos los Materiales", workshop_materials_url(@workshop), class: "ui fluid orange button" %>
           </div>
-        </div>
-      <% else %>
-        <p>No existe ningún tópico para este taller.</p>
-      <% end %>
+        <% else %>
+          <p>No existe ningún tópico para este taller.</p>
+        <% end %>
+      </div>
+      <div class="ui segment">
+        <h4 class="ui header">
+          Últimos 5 Materiales
+        </h4>
+        <% if @materials.any? %>
+          <div class="ui relaxed divided list">
+            <% @materials.each do |material| %>
+              <div class="item">
+                <i class="large middle aligned file outline icon"></i>
+                <div class="content">
+                  <div class="header"><%= material.title %></div>
+                  <div class="description">Subido el <%= material.created_at.strftime("%d/%m/%Y a las %H:%M") %></div>
+                </div>
+              </div>
+            <% end %>
+            <div class="item">
+              <%= link_to "Ver Todos los Materiales", workshop_materials_url(@workshop), class: "ui fluid orange button" %>
+            </div>
+          </div>
+        <% else %>
+          <p>No existe ningún tópico para este taller.</p>
+        <% end %>
+      </div>
     </div>
-  </div>
-<% elsif student_signed_in? and can? :create, Enrollment and @quotas > 0 %>
+  <% end %>
+<% elsif student_signed_in? and (can? :create, Enrollment) and @quotas > 0 %>
   <div class="ui orange segment">
     <h4 class="ui header">Inscripción de Taller</h4>
-    <p>Existe(n) <%= @quotas %> cupo(s) disponible(s). ¿Deseas inscribir este curso?</p>
-    <%= form_with(model: @enrollment, local: true) do |f| %>
-      <%= f.hidden_field :workshop_id, value: @workshop.id %>
-      <%= f.hidden_field :student_id, value: current_student.id %>
-      <%= f.submit "Inscribir Curso", class: "ui fluid orange button", data: { confirm: "¿Estas segura/o que deseas inscribir este curso?" } %>
+    <% if current_student.enrollments.map(&:workshop_id).include?(@workshop.id) %>
+      <p>Ya preinscribiste este curso. Por favor, espera confirmación.</p>
+    <% else %>
+      <p>Existe(n) <%= @quotas %> cupo(s) disponible(s). ¿Deseas preinscribir este curso?</p>
+      <%= form_with(model: @enrollment, local: true) do |f| %>
+        <%= f.hidden_field :workshop_id, value: @workshop.id %>
+        <%= f.hidden_field :student_id, value: current_student.id %>
+        <%= f.submit "Inscribir Curso", class: "ui fluid orange button", data: { confirm: "¿Estas segura/o que deseas inscribir este curso?" } %>
+      <% end %>
     <% end %>
   </div>
 <% end %>
