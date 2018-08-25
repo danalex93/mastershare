@@ -1,10 +1,104 @@
 <% if @current_institution.nil? %>
-  <h1 class="ui header">Bienvenido a MasterShare</h1>
+  <h1 class="ui header">
+    <%= image_tag "logo.png" %>
+    <div class="content">
+      Bienvenido a MasterShare
+      <div class="sub header">
+        La plataforma que reune a mentores y alumnos para tu institución  
+      </div>
+    </div>
+  </h1>
 
-  <section class="ui orange raised segment">
-    <h2 class="ui orange header">No has iniciado sesión</h2>
-    <p>Necesitamos que inicies sesión o te registres para conocer los talleres de tu institución. Puedes encontrar las opciones en la parte superior.</p>
-  </section>
+  <div class="ui segment">
+    <h2 class="ui header">¿A quienes ayuda?</h2>
+
+    <div class="ui three column grid">
+      <div class="column">
+        <div class="ui fluid card">
+          <div class="image" style="max-height: 15em; overflow: hidden;">
+            <%= image_tag "home/moderators-min.jpg" %>
+          </div>
+          <div class="content">
+            <p class="header">Moderadores</p>
+            <p>Te facilitamos el proceso de selección e inscripción de talleres.</p>
+          </div>
+          <div class="extra content">
+            <%= link_to "Ingresa", new_moderator_session_url, class: "ui green fluid button" %>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui fluid card">
+          <div class="image" style="max-height: 15em; overflow: hidden;">
+            <%= image_tag "home/teachers-min.jpg" %>
+          </div>
+          <div class="content">
+            <p class="header">Mentores</p>
+            <p>Te simplificamos la comunicación y compartición de material con tus alumnos.</p>
+          </div>
+          <div class="extra content">
+            <div class="ui two buttons">
+              <%= link_to "Ingresa", new_mentor_session_url, class: "ui green fluid button" %>
+              <%= link_to "Regístrate", new_mentor_registration_url, class: "ui orange fluid button" %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="ui fluid card">
+          <div class="image" style="max-height: 15em; overflow: hidden;">
+            <%= image_tag "home/students-min.jpg" %>
+          </div>
+          <div class="content">
+            <p class="header">Alumnos</p>
+            <p>Te ayudamos a encontrar y ser parte de los talleres que se imparten en tu institución</p>
+          </div>
+          <div class="extra content">
+            <div class="ui two buttons">
+              <%= link_to "Ingresa", new_student_session_url, class: "ui green fluid button" %>
+              <%= link_to "Regístrate", new_student_registration_url, class: "ui orange fluid button" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui segment">
+    <h2 class="ui header">Han confiado en nosotros</h2>
+    
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th>Institución</th>
+          <th>Talleres</th>
+          <th>Alumnos</th>
+          <th>Conversaciones</th>
+          <th>Comentarios</th>
+          <th>Materiales</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% Institution.all.each do |institution| %>
+          <tr>
+            <td><%= institution.name %></td>
+            <td><%= institution.workshops.count %></td>
+            <td><%= institution.students.count %></td>
+            <td><%= institution.topics.count %></td>
+            <td><%= institution.comments.count %></td>
+            <td><%= institution.materials.count %></td>
+          </tr>
+        <% end %>
+      </tbody>   
+    </table>
+  </div>
+
+  <style>
+    .ui.breadcrumb{
+      display: none !important;
+    }
+  </style>
 
 <% else %>
   <h1 class="ui header">Talleres de <%= @current_institution.name %></h1>

@@ -5,6 +5,11 @@ class Ability
     can :read, Workshop
     if moderator
       can :manage, :all
+      cannot :create, Workshop
+      cannot :create, Topic
+      cannot :create, Enrollment
+      cannot :create, Material
+      cannot :create, Comment
     elsif mentor
       can :manage, Workshop, mentor_id: mentor.id
       can :my, Workshop
@@ -19,9 +24,10 @@ class Ability
       end
     elsif student
       can :my, Workshop
-      can :manage, Topic do |topic|
+      can :read, Topic do |topic|
         student.enrollments.confirmed.map(&:workshop_id).include?(topic.workshop_id)
       end
+      can :manage, Topic, student_id: student.id
       can :read, Comment do |comment|
         student.enrollments.confirmed.map(&:workshop_id).include?(comment.workshop_id)
       end

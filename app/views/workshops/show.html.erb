@@ -48,7 +48,7 @@
   </div>
 </div>
 
-<% if student_signed_in? and current_student.enrollments.confirmed.map(&:workshop_id).include?(@workshop.id) %>
+<% if mentor_signed_in? or moderator_signed_in? or (student_signed_in? and current_student.enrollments.confirmed.map(&:workshop_id).include?(@workshop.id)) %>
   <% if not @topics.map{|t| can? :read, t}.include?(false) and not @materials.map{|m| can? :read, m}.include?(false) %>
     <div class="ui two horizontal segments">
       <div class="ui segment">

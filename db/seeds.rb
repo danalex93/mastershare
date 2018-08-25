@@ -1,10 +1,18 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Institution.create!([
+    {
+        name: "Universidad de Santiago"
+    },
+    {
+        name: "Universidad de Chile"
+    },
+    {
+        name: "Universidad Técnica Federico Santa María"
+    },
+    {
+        name: "Pontificia Universidad Católica"
+    }
+])
+
 
 Semester.create!([
     {
@@ -19,6 +27,7 @@ Semester.create!([
 
 Student.create!([
     {
+        institution_id: 1,
         email: "david.sanhueza.a@usach.cl",
         password: "holamundo",
         first_name: "David",
@@ -29,6 +38,7 @@ Student.create!([
 
     },
     {
+        institution_id: 1,
         type: "Mentor",
         email: "daniel.morales.m@usach.cl",
         password: "holamundo",
@@ -44,6 +54,7 @@ Student.create!([
 
 Workshop.create!([
     {
+        institution_id: 1,
         mentor_id: 2,
         title: "Taller de Javascript",
         description: "Desarrollo web con javascript",
@@ -52,6 +63,7 @@ Workshop.create!([
         semester_id: 1
     },
     {
+        institution_id: 1,
         mentor_id: 2,
         title: "Taller de React Native",
         description: "Desarrollo de aplicaciones hibridas con React Native",
@@ -109,5 +121,16 @@ Material.create!([
         title: "Instrucciones de conección a una API",
         workshop_id: 2
 
+    }
+])
+
+Moderator.create!([
+    {
+        institution_id: 1,
+        first_name: "Rosa",
+        last_name: "Barrera",
+        email: "rosa.barrera@usach.cl",
+        password: "holamundo",
+        role: "Jefa de Carrera"
     }
 ])
