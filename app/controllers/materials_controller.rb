@@ -36,7 +36,7 @@ class MaterialsController < ApplicationController
 
     respond_to do |format|
       if @material.save
-        format.html { redirect_to workshop_materials_url(@workshop), notice: 'Material was successfully created.' }
+        format.html { redirect_to workshop_materials_url(@workshop), notice: 'Material fue subido exitosamente.' }
         format.json { render :show, status: :created, location: @material }
       else
         format.html { render :new }
@@ -50,7 +50,7 @@ class MaterialsController < ApplicationController
   def update
     respond_to do |format|
       if @material.update(material_params)
-        format.html { redirect_to workshop_materials_url(@workshop), notice: 'Material was successfully updated.' }
+        format.html { redirect_to workshop_materials_url(@workshop), notice: 'Material fue editado exitosamente.' }
         format.json { render :show, status: :ok, location: @material }
       else
         format.html { render :edit }
@@ -64,7 +64,7 @@ class MaterialsController < ApplicationController
   def destroy
     @material.destroy
     respond_to do |format|
-      format.html { redirect_to workshop_materials_url(@workshop), notice: 'Material was successfully destroyed.' }
+      format.html { redirect_to workshop_materials_url(@workshop), notice: 'Material fue borrado exitosamente.' }
       format.json { head :no_content }
     end
   end

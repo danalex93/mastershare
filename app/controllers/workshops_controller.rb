@@ -61,7 +61,7 @@ class WorkshopsController < ApplicationController
 
     respond_to do |format|
       if @workshop.save
-        format.html { redirect_to @workshop, notice: 'Workshop was successfully created.' }
+        format.html { redirect_to @workshop, notice: 'Tu taller fue registrado con éxito. Te noficiaremos cuando sea aceptado.' }
         format.json { render :show, status: :created, location: @workshop }
       else
         format.html { render :new }
@@ -76,9 +76,9 @@ class WorkshopsController < ApplicationController
     respond_to do |format|
       if @workshop.update(workshop_params)
         if params[:workshop][:approved].present?
-          format.html { redirect_to moderate_workshops_url(semester_id: @workshop.semester_id), notice: 'Workshop was successfully updated.' }
+          format.html { redirect_to moderate_workshops_url(semester_id: @workshop.semester_id), notice: 'Tu taller fue editado con éxito.' }
         else
-          format.html { redirect_to @workshop, notice: 'Workshop was successfully updated.' }
+          format.html { redirect_to @workshop, notice: 'Taller fue editado con éxito.' }
         end
         format.json { render :show, status: :ok, location: @workshop }
       else
@@ -93,7 +93,7 @@ class WorkshopsController < ApplicationController
   def destroy
     @workshop.destroy
     respond_to do |format|
-      format.html { redirect_to workshops_url, notice: 'Workshop was successfully destroyed.' }
+      format.html { redirect_to workshops_url, notice: 'Taller fue borrado exitosamente.' }
       format.json { head :no_content }
     end
   end

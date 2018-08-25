@@ -35,7 +35,7 @@ class EnrollmentsController < ApplicationController
 
     respond_to do |format|
       if @enrollment.save
-        format.html { redirect_to @enrollment.workshop, notice: 'Enrollment was successfully created.' }
+        format.html { redirect_to @enrollment.workshop, notice: 'Tu preinscripción fue exitosa. Te noficaremos cuando seas inscrito.' }
         format.json { render :show, status: :created, location: @enrollment }
       else
         format.html { render :new }
@@ -49,7 +49,7 @@ class EnrollmentsController < ApplicationController
   def update
     respond_to do |format|
       if @enrollment.update(enrollment_params)
-        format.html { redirect_to moderate_workshops_url, notice: 'Enrollment was successfully updated.' }
+        format.html { redirect_to moderate_workshops_url(semester_id: @enrollment.workshop.semester_id), notice: 'La preinscripción fue confirmada con éxito.' }
         format.json { render :show, status: :ok, location: @enrollment }
       else
         format.html { render :edit }
@@ -63,7 +63,7 @@ class EnrollmentsController < ApplicationController
   def destroy
     @enrollment.destroy
     respond_to do |format|
-      format.html { redirect_to moderate_workshops_url, notice: 'Enrollment was successfully destroyed.' }
+      format.html { redirect_to moderate_workshops_url, notice: 'Inscripción borrada con éxito.' }
       format.json { head :no_content }
     end
   end
