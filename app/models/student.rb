@@ -8,9 +8,6 @@ class Student < ApplicationRecord
   has_many :topics
   has_many :comments
 
-  scope :approved, -> { where(approved: true) }
-  scope :pending, -> { where(approved: false) }
-
   def full_name
     "#{first_name} #{last_name}"
   end
