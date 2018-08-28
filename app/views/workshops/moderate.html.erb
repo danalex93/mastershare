@@ -50,13 +50,15 @@
             <td>
               <% if workshop.approved? %>
                 Aprobado
-              <% else %>
+              <% elsif workshop.semester == Semester.last %>
                 <%= form_with(model: workshop, local: true, html: { class: "ui form" }) do |f| %>
                   <%= f.hidden_field :approved, value: true %>
                   <div class="actions">
                     <%= f.submit "Aprobar Taller", class: "ui orange button", data: { confirm: "¿Estás segura/o que quieres aprobar este taller? Esta acción no se podrá deshacer."} %>
                   </div>
                 <% end %>
+              <% else %>
+                Taller No Aprobado
               <% end %>
             </td>
           </tr>

@@ -24,14 +24,32 @@
           <td><%= workshop.schedule %></td>
           <td><%= workshop.quotas %></td>
           <td>
-            <div class="ui two buttons">
-              <% if can? :show, workshop %>
-                <%= link_to 'Ver', workshop, class: "ui green button" %>
+            <% if mentor_signed_in? %>
+              <% if workshop.approved %>
+                <div class="ui two buttons">
+                  <% if can? :show, workshop %>
+                    <%= link_to 'Ver', workshop, class: "ui green button" %>
+                  <% end %>
+                  <% if can? :update, workshop %>
+                    <%= link_to 'Editar', edit_workshop_path(workshop), class: "ui yellow button" %>
+                  <% end %>
+                </div>
+              <% elsif workshop.semester == Semester.last %>
+                Pendiente de aprobación
+              <% else %>
+                Taller No Aprobado
               <% end %>
-              <% if can? :update, workshop %>
-                <%= link_to 'Editar', edit_workshop_path(workshop), class: "ui yellow button" %>
-              <% end %>
-            </div>
+            <% else %>
+              <div class="ui buttons">
+                <% if can? :show, workshop %>
+                  <%= link_to 'Ver', workshop, class: "ui green button" %>
+                <% elsif workshop.semester == Semester.last %>
+                  Pendiente de Confirmación
+                <% else %>
+                  No fuiste inscrito
+                <% end %>
+              </div>
+            <% end %>
           </td>
         </tr>
       <% end %>

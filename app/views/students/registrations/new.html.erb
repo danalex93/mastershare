@@ -10,7 +10,7 @@
       <div class="ui stacked segment">
         <div class="field">
           <%= f.label :institution_id, "Institución" %>
-          <%= f.collection_select :institution_id, @institutions, :id, :name, include_blank: "Selecciona la institución a la que perteneces..." %>
+          <%= f.collection_select :institution_id, Institution.all, :id, :name, include_blank: "Selecciona la institución a la que perteneces..." %>
         </div>
 
         <div class="field">

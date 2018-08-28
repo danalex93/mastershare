@@ -13,11 +13,6 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :semester_id, "Semestre" %>
-    <%= form.collection_select :semester_id, @semesters, :id, :identifier %> 
-  </div> 
-
-  <div class="field">
     <%= form.label :title, "Título" %>
     <%= form.text_field :title %>
   </div>
@@ -34,7 +29,7 @@
 
   <div class="field">
     <%= form.label :quotas, "Cupos" %>
-    <%= form.number_field :quotas %>
+    <%= form.number_field :quotas, min: (workshop.quotas.nil? ? 1 : workshop.enrollments.confirmed.count) %>
   </div>
 
   <div class="actions">

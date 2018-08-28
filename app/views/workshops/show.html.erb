@@ -31,7 +31,7 @@
     <div class="extra content">
       <div class="header">Cupos</div>
       <div class="description">
-        <p><%= @workshop.quotas %>. <%= @quotas %> disponible(s).</p>
+        <p><%= @workshop.quotas %> totales y <%= @quotas %> disponible(s).</p>
       </div>
     </div>
   </div>
@@ -114,5 +114,31 @@
         <%= f.submit "Inscribir Curso", class: "ui fluid orange button", data: { confirm: "¿Estas segura/o que deseas inscribir este curso?" } %>
       <% end %>
     <% end %>
+  </div>
+<% end %>
+
+<% if can? :manage, @workshop %>
+  <div class="ui segment">
+    <h2 class="ui header">Alumnos inscritos</h2>
+
+    <table class="ui table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <% @workshop.enrollments.confirmed.each do |enrollment| %>
+          <tr>
+            <td><%= enrollment.student.full_name %></td>
+            <td><%= enrollment.student.email %></td>
+            <td><%= enrollment.student.phone %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 <% end %>

@@ -7,14 +7,14 @@ class WorkshopsController < ApplicationController
   # GET /workshops
   # GET /workshops.json
   def index
-    @semesters = Semester.all
+    @semesters = Semester.all.order(id: :desc)
     if params[:semester_id].present?
       @workshops = Workshop.approved.where(semester_id: params[:semester_id], institution_id: @current_institution.id)
     end
   end
 
   def moderate
-    @semesters = Semester.all
+    @semesters = Semester.all.order(id: :desc)
     if params[:semester_id].present?
       @workshops = Workshop.where(semester_id: params[:semester_id], institution_id: @current_institution.id)
     end
@@ -24,7 +24,7 @@ class WorkshopsController < ApplicationController
 
   def my
     @workshops = current_mentor.workshops.order(semester_id: :desc) if mentor_signed_in?
-    @workshops ||= current_student.workshops.order(semester_id: :desc) if student_signed_in?
+    @workshops ||= current_student.workshops.approved.order(semester_id: :desc) if student_signed_in?
   end
 
   # GET /workshops/1
@@ -35,6 +35,7 @@ class WorkshopsController < ApplicationController
     @topics = @workshop.topics.order(created_at: :desc).limit(5)
     @materials = @workshop.materials.order(created_at: :desc).limit(5)
     @enrollment = Enrollment.new
+    @enrollments = @workshop.enrollments.confirmed
   end
 
   # GET /workshops/new
@@ -58,6 +59,8 @@ class WorkshopsController < ApplicationController
   def create
     @workshop = Workshop.new(workshop_params)
     @workshop.mentor = current_mentor
+    @workshop.semester = Semester.last
+    @workshop.institution = @current_institution
 
     respond_to do |format|
       if @workshop.save
