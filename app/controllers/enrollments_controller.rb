@@ -7,7 +7,7 @@ class EnrollmentsController < ApplicationController
   # GET /enrollments
   # GET /enrollments.json
   def index
-    @semesters = Semester.all
+    @semesters = Semester.all.order(id: :desc)
     if params[:semester_id].present?
       @enrollments = Enrollment.joins(:workshop).where(workshops: { semester_id: params[:semester_id] })
     end
