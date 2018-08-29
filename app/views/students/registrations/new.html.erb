@@ -6,7 +6,7 @@
         Registrarse como Alumno
       </div>
     </h2>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "ui large form" }) do |f| %> 
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "ui large form" }) do |f| %>
       <div class="ui stacked segment">
         <div class="field">
           <%= f.label :institution_id, "Institución" %>
@@ -15,37 +15,37 @@
 
         <div class="field">
           <%= f.label :first_name, "Nombre(s)" %>
-          <%= f.text_field :first_name %>
+          <%= f.text_field :first_name , placeholder: "Primer Nombre (Opcional: Segundo Nombre)"%>
         </div>
 
         <div class="field">
           <%= f.label :last_name, "Apellido(s)" %>
-          <%= f.text_field :last_name %>
+          <%= f.text_field :last_name, placeholder: "Primer Apellido (Opcional: Segundo Apellido)" %>
         </div>
 
         <div class="field">
           <%= f.label :rut, "RUN" %>
-          <%= f.text_field :rut %>
+          <%= f.text_field :rut, placeholder: "Ejemplo: 12.345.678-k" %>
         </div>
 
         <div class="field">
-          <%= f.label :address, "Dirección y Comuna" %>
-          <%= f.text_field :address %>
+          <%= f.label :address, "Dirección" %>
+          <%= f.text_field :address, placeholder: "Nombre de la Calle, Numeracion y Comuna" %>
         </div>
 
         <div class="field">
           <%= f.label :phone, "Teléfono" %>
-          <%= f.text_field :phone %>
+          <%= f.text_field :phone, placeholder: "Ejemplo: +56 123 456 78" %>
         </div>
 
         <div class="field">
           <%= f.label :email, "Correo Electrónico" %>
-          <%= f.email_field :email, autocomplete: "email" %>
+          <%= f.email_field :email, autocomplete: "email", placeholder: "nombreCorreo@institucion.cl"%>
         </div>
 
         <div class="field">
           <%= f.label :password, "Contraseña" %>
-          <%= f.password_field :password, autocomplete: "off" %>
+          <%= f.password_field :password, autocomplete: "off" , placeholder: "Ingrese su Nueva Contraseña"%>
           <% if @minimum_password_length %>
             <em>(<%= @minimum_password_length %> caracteres mínimos)</em>
           <% end %>
@@ -53,7 +53,7 @@
 
         <div class="field">
           <%= f.label :password_confirmation, "Confirma tu Contraseña" %>
-          <%= f.password_field :password_confirmation, autocomplete: "off" %>
+          <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Repita la Contraseña" %>
         </div>
         <%= f.submit "Registrarse", class: "ui fluid large submit green button" %>
       </div>
