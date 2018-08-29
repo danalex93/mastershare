@@ -49,7 +49,6 @@ class WorkshopsController < ApplicationController
   # GET /workshops/1/edit
   def edit
     @mentors = Mentor.all
-    @semesters = Semester.all
 
     add_breadcrumb "Editar Taller", edit_workshop_url(@workshop)
   end

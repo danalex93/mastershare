@@ -117,7 +117,7 @@
   </div>
 <% end %>
 
-<% if can? :manage, @workshop %>
+<% if (can? :manage, @workshop) and @workshop.approved %>
   <div class="ui segment">
     <h2 class="ui header">Alumnos inscritos</h2>
 
@@ -130,7 +130,6 @@
         </tr>
       </thead>
       <tbody>
-
         <% @workshop.enrollments.confirmed.each do |enrollment| %>
           <tr>
             <td><%= enrollment.student.full_name %></td>

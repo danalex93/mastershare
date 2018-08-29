@@ -13,6 +13,6 @@ test:
 
 production:
   <<: *default
-  database: mastershare_production
+  database: mastershare
   username: mastershare
   password: <%= ENV['MASTERSHARE_DATABASE_PASSWORD'] %>
